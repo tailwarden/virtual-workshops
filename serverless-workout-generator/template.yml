@@ -1,0 +1,28 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: SAM Template for workout-generator
+
+Resources:
+  WorkoutGenerator:
+    Type: AWS::Serverless::Function
+    Properties: 
+      FunctionName: WorkoutGenerator
+      CodeUri: .
+      Handler: main
+      Runtime: go1.x
+      Timeout: 20
+      MemorySize: 128
+      Architectures:
+        - x86_64
+      Environment: 
+        Variables:
+          OPENAI_TOKEN: "{{resolve:ssm:/OPENAI_TOKEN:1}}"
+          TWILIO_USERNAME: "{{resolve:ssm:/TWILIO_USERNAME:1}}"
+          TWILIO_PASSWORD: "{{resolve:ssm:/TWILIO_PASSWORD:1}}"
+          TO_NUMBER: "{{resolve:ssm:/TO_NUMBER:1}}"
+          FROM_NUMBER: "{{resolve:ssm:/FROM_NUMBER:1}}"
+      Events:
+        InvocationLevel:
+          Type: Schedule
+          Properties:
+            Schedule: cron(0 19 ? * MON-FRI *)
