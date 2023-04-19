@@ -1,0 +1,46 @@
+{
+    "variables" : {
+        "region" : "",
+        "aws_profile": "",
+        "source_ami" : "",
+        "instance_type": "",
+        "ssh_key": ""
+    },
+    "builders" : [
+        {
+            "type" : "amazon-ebs",
+            "profile" : "{{user `aws_profile`}}",
+            "region" : "{{user `region`}}",
+            "instance_type" : "{{user `instance_type`}}",
+            "source_ami" : "{{user `source_ami`}}",
+            "ssh_username" : "ec2-user",
+            "ami_name" : "jenkins-master",
+            "ami_description" : "Amazon Linux Image with Jenkins Server",
+            "run_tags" : {
+                "Name" : "jenkins-master-builder"
+            }
+        }
+    ],
+    "provisioners" : [
+        {
+            "type" : "file",
+            "source" : "./scripts",
+            "destination" : "/tmp/"
+        },
+        {
+            "type" : "file",
+            "source" : "./config",
+            "destination" : "/tmp/"
+        },
+        {
+            "type" : "file",
+            "source" : "{{user `ssh_key`}}",
+            "destination" : "/tmp/id_rsa"
+        },
+        {
+            "type" : "shell",
+            "script" : "./setup.sh",
+            "execute_command" : "sudo -E -S sh '{{ .Path }}'"
+        }
+    ]
+}

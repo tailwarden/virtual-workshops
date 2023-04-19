@@ -1,0 +1,30 @@
+{
+    "variables" : {
+        "region" : "",
+        "aws_profile": "",
+        "source_ami" : "",
+        "instance_type": ""
+    },
+    "builders" : [
+        {
+            "type" : "amazon-ebs",
+            "profile" : "{{user `aws_profile`}}",
+            "region" : "{{user `region`}}",
+            "instance_type" : "{{user `instance_type`}}",
+            "source_ami" : "{{user `source_ami`}}",
+            "ssh_username" : "ec2-user",
+            "ami_name" : "jenkins-worker",
+            "ami_description" : "Jenkins worker's AMI",
+            "run_tags" : {
+                "Name" : "jenkins-worker-builder"
+            }
+        }
+    ],
+    "provisioners" : [
+        {
+            "type" : "shell",
+            "script" : "./setup.sh",
+            "execute_command" : "sudo -E -S sh '{{ .Path }}'"
+        }
+    ]
+}

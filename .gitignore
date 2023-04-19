@@ -1,2 +1,4 @@
 .aws-sam
 .env
+.terraform*
+variables.tfvars

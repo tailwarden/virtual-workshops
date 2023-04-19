@@ -1,0 +1,6 @@
+FROM golang:1.20
+WORKDIR /go/src/github.com/mlabouardy/serverless-app
+
+COPY . .
+RUN go get -v
+RUN GOOS=linux GOARCH=amd64 go build -o main main.go

@@ -1,0 +1,14 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "1",
+            "Effect": "Allow",
+            "Action": [
+                "s3:*",
+                "lambda:*"
+            ],
+            "Resource": "*"
+        }
+    ]
+}

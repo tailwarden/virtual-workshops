@@ -1,0 +1,49 @@
+def bucket = 'YOUR S3 BUCKET HERE'
+def functionName = 'ServerlessAppDemo'
+def region = 'eu-central-1'
+def environments = ['develop': 'sandbox', 'preprod': 'staging', 'master': 'production']
+
+node('workers'){
+    stage('Checkout'){
+        checkout scm
+    }
+
+    stage('Test'){
+        sh "echo 'running tests'"
+    }
+
+    stage('Build'){
+        sh """
+            docker build -f Dockerfile.build -t serverless-app .
+            containerName=\$(docker run -d serverless-app)
+            docker cp \$containerName:/go/src/github.com/mlabouardy/serverless-app/main main
+            docker rm -f \$containerName
+            zip -r deployment.zip main
+        """ 
+    }
+
+    stage('Push'){
+        if(env.BRANCH_NAME == 'develop' || env.BRANCH_NAME == 'preprod' || env.BRANCH_NAME == 'master'){
+            sh "aws s3 cp deployment.zip s3://${bucket}/${functionName}/${environments[env.BRANCH_NAME]}/"
+        }
+    }
+
+    stage('Deploy'){
+        if(env.BRANCH_NAME == 'develop' || env.BRANCH_NAME == 'preprod' || env.BRANCH_NAME == 'master'){
+            sh """
+                aws lambda update-function-code --function-name ${functionName} --s3-bucket ${bucket} --s3-key ${functionName}/${environments[env.BRANCH_NAME]}/deployment.zip --region ${region}
+                version=\$(aws lambda get-alias --function-name ${functionName} --name ${environments[env.BRANCH_NAME]} --region ${region} | jq -r '.FunctionVersion')
+                new_envvars=\$(aws lambda get-function-configuration --function-name ${functionName} --region ${region} --qualifier \$version --query "Environment.Variables") 
+                 aws lambda update-function-configuration --function-name ${functionName} --environment "{ \\"Variables\\": \$new_envvars }" --region ${region}
+            """
+            
+            sleep(3)
+            
+            sh """
+                publishedVersion=\$(aws lambda publish-version --function-name ${functionName} --description ${environments[env.BRANCH_NAME]} --region ${region} | jq -r '.Version')
+                aws lambda update-alias --function-name ${functionName} --name ${environments[env.BRANCH_NAME]} --function-version \$publishedVersion --region ${region}
+            """
+        }
+    }
+
+}
