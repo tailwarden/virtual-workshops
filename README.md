@@ -8,10 +8,10 @@ Free Workshop on how to build a Jenkins cluster on AWS with Terraform and Packer
 
 What's included
 
-1️⃣ Baking machine images with Packer
-2️⃣ Discovering Jenkins as Code with Terraform
-3️⃣ Deploying Jenkins cluster on AWS
-4️⃣ Building a CI/CD pipeline for a Serverless app
+1️⃣ Baking machine images with Packer <br/>
+2️⃣ Discovering Jenkins as Code with Terraform <br/>
+3️⃣ Deploying Jenkins cluster on AWS <br/>
+4️⃣ Building a CI/CD pipeline for a Serverless app <br/>
 
 ### Build a Gym workout Generator on AWS Lambda w/ ChatGPT + Twilio
 
