@@ -13,6 +13,12 @@ What's included
 3️⃣ Deploying Jenkins cluster on AWS <br/>
 4️⃣ Building a CI/CD pipeline for a Serverless app <br/>
 
+In case you missed the event, you can watch it again:
+
+<a href="https://www.youtube.com/watch?v=w5J7fBATCu4">
+    <img src="assets/jenkins-workshop-banner.png">
+</a>
+
 ### Build a Gym workout Generator on AWS Lambda w/ ChatGPT + Twilio
 
 Free Workshop on how to build a serverless gym app that sends a workout plan directly to your WhatsApp using ChatGPT + Twilio.
@@ -31,4 +37,4 @@ In case you missed the event, you can watch it again:
     <img src="assets/workshop1.png">
 </a>
 
-Create a similar serverless app that integrates with ChatGPT and share it on Twitter, to enter the competition tag [Tailwarden on Twitter](https://twitter.com/tailwarden)and add the hastag #WardensAssemblyChallenge. The 3 winners will be chosen on Friday April 28th.
+Create a similar serverless app that integrates with ChatGPT and share it on Twitter, to enter the competition tag [Tailwarden on Twitter](https://twitter.com/tailwarden) and add the hastag #WardensAssemblyChallenge. The 3 winners will be chosen on Friday April 28th.
